@@ -23,9 +23,12 @@ is no longer the product direction.
   compatibility apply. Live dashboard and installed Python save/restore remain
   separate verification gaps. Evidence and rollout details live in
   `backend/docs/workspaces.md` and its private qualification records.
-- JavaScript and Python SDK 0.1.0 are implemented but remain unpublished until
-  artifact/deployed gates, registry ownership, publication, and fresh-download
-  verification complete. Follow `backend/docs/sdk-release.md`.
+- Python SDK 0.1.0 is published on PyPI; fresh wheel/source downloads match the
+  qualified hashes and both clean installations pass their contract suites.
+  JavaScript 0.1.0 passes artifact and deployed qualification but remains
+  unpublished because npm requires 2FA or a granular token with bypass 2FA.
+  The deployed SDK gate used two total starts; Python’s default HTTP user agent
+  was fixed before its successful remaining start. Follow `backend/docs/sdk-release.md`.
 - Internet-off mode exists but remains disabled pending its complete release gate.
   Metrics and webhooks remain unqualified; lifecycle history is available.
 
@@ -34,8 +37,9 @@ is no longer the product direction.
 1. Keep backend and web CI green, including deterministic portable skill archives.
 2. Complete dashboard and installed SDK workspace save/restore/export verification
    within explicit start budgets; keep independent exports and recovery evidence.
-3. Qualify and publish the exact SDK 0.1.0 artifacts to npm and PyPI. Replace
-   archive-install examples only after registry downloads are verified.
+3. Publish the exact qualified JavaScript SDK 0.1.0 artifact to npm after resolving
+   token permissions/2FA. Python is released. Replace JavaScript archive-install
+   examples only after registry downloads are verified.
 4. Finish the internet-off release gate before enabling it.
 5. Build secret mediation and exact-destination egress policy: credentials stay in
    a trusted mediator outside guest environment variables and process arguments.
