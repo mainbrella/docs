@@ -25,9 +25,9 @@ is no longer the product direction.
   `backend/docs/workspaces.md` and its private qualification records.
 - Python SDK 0.1.0 is published on PyPI; fresh wheel/source downloads match the
   qualified hashes and both clean installations pass their contract suites.
-  JavaScript 0.1.0 passes artifact and deployed qualification but remains
-  staged on npm as `@mainbrella/sdk` 0.1.0, with a verified archive checksum,
-  awaiting registry validation and browser 2FA approval. A checksum-pinned
+  JavaScript 0.1.0 is published on npm after browser 2FA stage approval. Its
+  fresh registry download matches the qualified checksum; a clean registry
+  installation passes 22 contract tests, declarations, and CLI checks. A checksum-pinned
   GitHub OIDC staging workflow is prepared but not yet configured in npm.
   The deployed SDK gate used two total starts; Python’s default HTTP user agent
   was fixed before its successful remaining start. Follow `backend/docs/sdk-release.md`.
@@ -39,9 +39,9 @@ is no longer the product direction.
 1. Keep backend and web CI green, including deterministic portable skill archives.
 2. Complete dashboard and installed SDK workspace save/restore/export verification
    within explicit start budgets; keep independent exports and recovery evidence.
-3. Publish the exact qualified JavaScript SDK 0.1.0 artifact to npm after resolving
-   browser stage approval. Python is released. Replace JavaScript archive-install
-   examples only after registry downloads are verified.
+3. Preserve SDK artifact and deployed release gates. Version 0.1.0 is released
+   on both registries with verified installation docs. Configure npm trusted
+   publishing for future GitHub OIDC stage submissions.
 4. Finish the internet-off release gate before enabling it.
 5. Build secret mediation and exact-destination egress policy: credentials stay in
    a trusted mediator outside guest environment variables and process arguments.
