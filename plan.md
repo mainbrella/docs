@@ -26,8 +26,8 @@ is no longer the product direction.
 - Python SDK 0.1.0 is published on PyPI; fresh wheel/source downloads match the
   qualified hashes and both clean installations pass their contract suites.
   JavaScript 0.1.0 passes artifact and deployed qualification but remains
-  unpublished while the `mainbrella` npm scope is created. Staged publishing
-  with browser 2FA approval replaces direct token publishing; a checksum-pinned
+  staged on npm as `@mainbrella/sdk` 0.1.0, with a verified archive checksum,
+  awaiting registry validation and browser 2FA approval. A checksum-pinned
   GitHub OIDC staging workflow is prepared but not yet configured in npm.
   The deployed SDK gate used two total starts; Python’s default HTTP user agent
   was fixed before its successful remaining start. Follow `backend/docs/sdk-release.md`.
@@ -40,7 +40,7 @@ is no longer the product direction.
 2. Complete dashboard and installed SDK workspace save/restore/export verification
    within explicit start budgets; keep independent exports and recovery evidence.
 3. Publish the exact qualified JavaScript SDK 0.1.0 artifact to npm after resolving
-   the missing npm scope and completing browser stage approval. Python is released. Replace JavaScript archive-install
+   browser stage approval. Python is released. Replace JavaScript archive-install
    examples only after registry downloads are verified.
 4. Finish the internet-off release gate before enabling it.
 5. Build secret mediation and exact-destination egress policy: credentials stay in
