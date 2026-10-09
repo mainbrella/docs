@@ -1,3 +1,140 @@
+Yes. I think MainBrella should move toward usage-based pricing now, before you add more infrastructure services. But I wouldn't copy AWS's complicated pricing model. I'd copy the simplicity of Railway or Fly.io.
+
+There's something interesting about your existing pricing that makes this transition particularly natural.
+
+## 1. Your three plans already charge almost exactly the same rate
+
+| Plan    | Monthly price | Compute-unit hours | Effective rate   |
+| ------- | ------------- | ------------------ | ---------------- |
+| Builder | $5            | 250                | $0.0200/CU-hour  |
+| Pro     | $180          | 9,000              | $0.0200/CU-hour  |
+| Scale   | $999          | 50,000             | $0.01998/CU-hour |
+
+You're essentially selling the same compute at the same price, but making customers buy increasingly large buckets of it upfront.
+
+A customer who wants $40 worth of MainBrella has to choose between a $5 plan that's too small and a $180 plan that's too expensive.
+
+That's the biggest pricing problem I'd fix.
+
+## 2. What successful infrastructure platforms do
+
+Railway
+
+A $5 monthly minimum that includes $5 of usage. If a customer consumes $18 of resources, the total is $18, not $23. This is very close to what I would implement for MainBrella.&#x20;
+
+[image](https://www.google.com/s2/favicons?domain=https://docs.railway.com\&sz=32)
+
+Railway Docs
+
+
+
+Fly.io
+
+Pay-as-you-go compute, storage, network traffic, and dedicated IPs, with published unit prices. A straightforward model for infrastructure that can grow into many services.&#x20;
+
+[image](https://www.google.com/s2/favicons?domain=https://fly.io\&sz=32)
+
+Fly
+
+
+
+Render
+
+Combines workspace subscriptions with separately metered compute, bandwidth, and custom-domain usage. This shows how platform features and resource charges can coexist.&#x20;
+
+[image](https://www.google.com/s2/favicons?domain=https://render.com\&sz=32)
+
+Render Changelog
+
+
+
+## 3. The MainBrella model I'd implement
+
+# MainBrella
+
+## $5/month minimum
+
+Includes $5 of usage. Pay only for additional resources consumed.
+
+Example monthly resource rates
+
+| Lite container       | $0.02/hour       |
+| -------------------- | ---------------- |
+| Small container      | $0.12/hour       |
+| Medium container     | $0.20/hour       |
+| Persistent storage   | Per GB-month     |
+| Dedicated IP address | Per IP-month     |
+| Email sending        | Per 1,000 emails |
+| Network egress       | Per GB           |
+
+Compute prices reuse your current implied rates. Other service rates would need to be set after supplier-cost analysis.
+
+Explore a monthly estimate
+
+Temporary Lite sandbox hours
+
+100h
+
+One always-on production machine
+
+Small
+
+Estimated monthly bill
+
+# $88.40
+
+Assumes a 30-day month, no other billable resources, and a $5 monthly minimum credited toward usage.
+
+This solves your original problem automatically: the user can spend $90 on an always-on server, $90 on temporary agents, or any combination.
+
+## 4. What happens to $180 and $999?
+
+I'd eventually turn these into optional monthly spending commitments, rather than required plans for larger workloads.
+
+| Offering        | How it works                                                                          |
+| --------------- | ------------------------------------------------------------------------------------- |
+| Standard        | $5 minimum, credited toward any resource usage                                        |
+| $180 commitment | At least $180/month in usage, with optional volume benefits                           |
+| $999 commitment | At least $999/month in usage, with optional volume benefits and higher service limits |
+
+There's no reason to push people into the higher commitments today when your effective compute rates are already identical.
+
+The higher commitments only become compelling once you can provide tangible advantages, such as volume discounts, more concurrency, stronger support, or contractual guarantees.
+
+## 5. The important safeguards
+
+Pure usage-based billing introduces risks that your current fixed plans avoid. I'd implement these before enabling unlimited overages:
+
+- Spend limits: Customers choose a maximum monthly bill, with alerts at 50%, 80%, and 100%.
+- Cost estimates: Before starting an always-on machine, show its estimated monthly cost, as well as costs for IPs and storage.
+- Production protection: Warn users prominently if a spending cap could take a production service offline. Don't silently stop a critical application.
+- Abuse protection: Require a payment method or small prepaid balance before allowing significant resource consumption, with limits on provisioning rates and concurrency.
+
+Railway already offers usage limits and alerts, which is useful precedent, though exceeding its hard limit can shut down workloads.&#x20;
+
+[image](https://www.google.com/s2/favicons?domain=https://docs.railway.com\&sz=32)
+
+Railway Docs
+
+
+
+## 6. Don't become AWS just because you can
+
+I would distinguish between building an infrastructure platform and exposing every infrastructure primitive.
+
+MainBrella's advantage should be that somebody can say:
+
+> Run this GitHub repository, give it a permanent URL, add a database, and let me know what it costs.
+
+They shouldn't have to understand the mechanics of provisioning VMs, gateways, networks, domains, certificates, and storage.
+
+Likewise, an email service doesn't necessarily mean operating your own mail-delivery infrastructure. You could integrate an established provider and meter usage through MainBrella.
+
+My recommendation: Keep the $5 monthly minimum, replace the fixed compute quotas with metered billing, and let the same account balance cover all infrastructure services. De-emphasize $180 and $999 subscriptions until customers have a demonstrated reason to commit at those levels.
+
+This gives you a pricing system that can grow from sandbox agents into broader cloud hosting without redesigning your plans each time you add a new service.
+
+
 ## MainBrella: Can sandboxes run 24/7 as production servers?
 
 Short answer: Cloudflare's underlying infrastructure can support long-running containers, but MainBrella's current implementation is designed for temporary workloads.
