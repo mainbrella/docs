@@ -1,3 +1,50 @@
+# Current billing decision — October 2026
+
+Mainbrella uses prepaid compute credit with a $5 minimum one-time purchase.
+There is no new monthly subscription, monthly minimum, or postpaid usage
+invoice. Purchased credit carries forward until consumed. The historical
+proposal below is retained for context; this decision supersedes its billing
+recommendations.
+
+Compute remains $0.02 per compute-unit hour, weighted by machine size. The
+account wallet stores exact lifetime weighted milliseconds, separate from the
+UTC monthly spending cap. A month boundary resets the cap's usage window,
+never the wallet's consumption or outstanding reservations.
+
+Every runtime lease reserves existing paid credit before provisioning or
+extending its deadline. Concurrent starts share one durable account ledger.
+Only elapsed runtime is consumed; unused reservations are released after a
+confirmed stop. Unreadable machines retain their reservations. New production
+servers require enough funds and spending-cap room for 24 hours of the entire
+desired fleet, including services waiting for recovery and the requested
+server. Ad hoc reservations also reduce available funding. Existing production
+services renew short funded leases and stop when funds or the cap run out.
+
+The account menu and billing page show current balance. The billing page also
+shows available and reserved credit, UTC monthly consumption, and production
+runway. Optional automatic recharge requires explicit consent, a purchase
+amount, and an independent monthly recharge limit. A recharge funds runtime
+only after Stripe confirms a successful captured payment. Pending or failed
+payments do not extend deadlines. Durable charge identifiers prevent duplicate
+charges after ambiguous responses or eviction.
+
+Stripe uses a one-time Mainbrella Compute Credit Product and a $5 USD one-time
+reference Price (`STRIPE_PREPAID_PRICE_ID`). Larger purchases use the same
+Product with the selected purchase amount. Development and production have
+separate test/live Price IDs. Verified completion and signed payment, refund,
+and dispute webhooks update the wallet idempotently. Refunds and disputes
+remove funding and fence affected running or pending leases; delayed success
+events cannot restore reversed credit.
+
+All purchases receive credit dollar for dollar, with the same account limits
+and compute rate. Thirty-six $5 purchases equal one $180 purchase; two hundred
+$5 purchases equal one $1,000 purchase. There are no volume bonuses or purchase
+tiers. Each start reserves paid runtime, including startup and idle time, with
+no separate start fee. The existing 10,000 new-starts-per-UTC-month limit remains
+an abuse guard; idempotent creation retries do not count as additional starts.
+
+## Historical proposal
+
 Yes. I think MainBrella should move toward usage-based pricing now, before you add more infrastructure services. But I wouldn't copy AWS's complicated pricing model. I'd copy the simplicity of Railway or Fly.io.
 
 There's something interesting about your existing pricing that makes this transition particularly natural.
