@@ -54,9 +54,9 @@ I would start by benchmarking these three:
 
 | Model on Workers AI | Input / 1M tokens | Output / 1M tokens | Role                             |
 | ------------------- | ----------------- | ------------------ | -------------------------------- |
-| GLM-5.3 Flash       | $0.15             | $0.50              | Default app builder              |
+| GLM-5.3             | $1.40             | $4.40              | Quality-first default            |
 | Kimi K2.7 Code      | $0.95             | $4.00              | Complex coding and repairs       |
-| GLM-5.3             | $1.40             | $4.40              | Difficult multi-step engineering |
+| GLM-5.3 Flash       | $0.15             | $0.50              | Lower-cost app builder           |
 
 These are Cloudflare's listed inference prices as of October 10, 2026, before MainBrella's markup. All three support tool calling, and GLM-5.3 Flash and Kimi also support vision.&#x20;
 
@@ -68,7 +68,11 @@ Cloudflare Workers AI docs
 
 
 
-My initial default would be `@cf/zai-org/glm-5.3-flash`. It has a very compelling price and a large context window. But we should test actual completed-app quality rather than assume the cheapest model will give the lowest cost per successful app.
+The Build picker should expose only these three models, ordered by their intended role: GLM-5.3 (Best quality), Kimi K2.7 Code (Coding), and GLM-5.3 Flash (Lower cost). Default to `@cf/zai-org/glm-5.3` with High effort. The quality label describes the intended flagship tier; we still need to measure completed-app quality and cost per successful app.
+
+For both GLM models, offer only High and Extra high, with High selected by default. Extra high sends the native `max` reasoning mode, rather than the `xhigh` compatibility alias. Kimi has fixed, always-on reasoning, so hide the effort control for that model. Keep older models and effort modes available internally only for builds already queued; new builds use the curated choices. Remembered choices removed from the picker should reset to the recommended model and effort.
+
+Supported reasoning modes: [GLM-5.3](https://developers.cloudflare.com/workers-ai/models/glm-5.3/), [GLM-5.3 Flash](https://developers.cloudflare.com/workers-ai/models/glm-5.3-flash/), and [Kimi K2.7 Code](https://developers.cloudflare.com/workers-ai/models/kimi-k2.7-code/).
 
 Illustrative inference cost for 100,000 input + 20,000 output tokens
 
